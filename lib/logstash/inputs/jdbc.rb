@@ -239,7 +239,7 @@ class LogStash::Inputs::Jdbc < LogStash::Inputs::Base
   end # def register
 
   def run(queue)
-    if @schedule
+    if @schedule && !ENV['LOGSTASH_JDBC_NO_SCHEDULE']
       @scheduler = Rufus::Scheduler.new(:max_work_threads => 1)
       @scheduler.cron @schedule do
         execute_query(queue)
